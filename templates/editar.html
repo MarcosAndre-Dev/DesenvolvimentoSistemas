@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+  .form-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    max-width: 560px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .form-card-header {
+    background: #ecc94b;
+    color: #744210;
+    padding: 20px 28px;
+  }
+
+  .form-card-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .form-card-body {
+    padding: 28px;
+  }
+
+  .field { margin-bottom: 20px; }
+
+  .field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #2d3748;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    resize: vertical;
+    background: #fff;
+  }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: #ecc94b;
+    box-shadow: 0 0 0 3px rgba(236,201,75,0.18);
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .btn-save {
+    padding: 10px 24px;
+    background: #ecc94b;
+    color: #744210;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-save:hover { background: #d69e2e; }
+
+  .btn-cancel {
+    padding: 10px 20px;
+    background: #edf2f7;
+    color: #4a5568;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-cancel:hover { background: #e2e8f0; color: #2d3748; }
+</style>
+
+<div class="form-card">
+  <div class="form-card-header">
+    <h2>✏️ Editar Tarefa</h2>
+  </div>
+  <div class="form-card-body">
+    <form method="post" action="/editar/{{ tarefa.id }}">
+      <div class="field">
+        <label for="titulo">Título <span style="color:#fc8181">*</span></label>
+        <input type="text" id="titulo" name="titulo" value="{{ tarefa.titulo }}" required autofocus>
+      </div>
+      <div class="field">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" rows="4">{{ tarefa.descricao or "" }}</textarea>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="pendente"  {% if tarefa.status == "pendente"  %}selected{% endif %}>⏳ Pendente</option>
+          <option value="concluida" {% if tarefa.status == "concluida" %}selected{% endif %}>✔ Concluída</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Salvar alterações</button>
+        <a href="/" class="btn-cancel">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

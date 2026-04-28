@@ -1,0 +1,176 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .page-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a202c;
+  }
+
+  .btn-new {
+    padding: 9px 20px;
+    background: #4f7ef8;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-new:hover { background: #3a66d8; color: #fff; }
+
+  /* ── TABELA ── */
+  .table-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  thead {
+    background: #1a202c;
+    color: #fff;
+  }
+
+  thead th {
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #edf2f7;
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f7fafc; }
+
+  tbody td {
+    padding: 14px 18px;
+    color: #4a5568;
+    vertical-align: middle;
+  }
+
+  td.titulo { font-weight: 600; color: #1a202c; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-concluida {
+    background: #c6f6d5;
+    color: #276749;
+  }
+
+  .badge-pendente {
+    background: #fefcbf;
+    color: #744210;
+  }
+
+  /* ── BOTÕES DE AÇÃO ── */
+  .actions { display: flex; gap: 6px; }
+
+  .btn-action {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-action:hover { opacity: 0.8; }
+  .btn-edit   { background: #ecc94b; color: #744210; }
+  .btn-done   { background: #48bb78; color: #fff; }
+  .btn-delete { background: #fc8181; color: #742a2a; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #a0aec0;
+  }
+
+  .empty-state p { font-size: 1rem; margin-bottom: 16px; }
+</style>
+
+<div class="page-header">
+  <h2>Minhas Tarefas</h2>
+  <a href="/nova" class="btn-new">+ Nova Tarefa</a>
+</div>
+
+<div class="table-card">
+  {% if tarefas %}
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descrição</th>
+        <th>Status</th>
+        <th>Criado em</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in tarefas %}
+      <tr>
+        <td class="titulo">{{ t.titulo }}</td>
+        <td>{{ t.descricao or "—" }}</td>
+        <td>
+          {% if t.status == "concluida" %}
+            <span class="badge badge-concluida">✔ Concluída</span>
+          {% else %}
+            <span class="badge badge-pendente">⏳ Pendente</span>
+          {% endif %}
+        </td>
+        <td>{{ t.criado_em }}</td>
+        <td>
+          <div class="actions">
+            <a href="/editar/{{ t.id }}" class="btn-action btn-edit">Editar</a>
+            {% if t.status == "pendente" %}
+              <a href="/concluir/{{ t.id }}" class="btn-action btn-done">Concluir</a>
+            {% endif %}
+            <a href="/excluir/{{ t.id }}" class="btn-action btn-delete"
+               onclick="return confirm('Deseja excluir esta tarefa?')">Excluir</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <p>Nenhuma tarefa cadastrada ainda.</p>
+    <a href="/nova" class="btn-new">+ Criar primeira tarefa</a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
