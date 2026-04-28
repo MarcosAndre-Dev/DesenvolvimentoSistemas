@@ -58,7 +58,7 @@ venv\Scripts\activate
 **Linux / macOS:**
 ```bash
 python3 -m venv venv
-source venv/bin/activate
+source venv/Scripts/Activate
 ```
 
 > Após ativar, o terminal deve exibir `(venv)` no início da linha.
